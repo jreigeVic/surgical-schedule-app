@@ -66,10 +66,10 @@ export default {
   data() {
     return {
       sortKey: null,
-      sortOrder: 'asc', 
+      sortOrder: 'asc',
     };
   },
-  computed: {
+  computed: { // aqui tem cache <----- melhor quando precisa ser reutilizado ou depende de outra prop
     sortedSchedules() {
       if (!this.sortKey) return this.schedules;
       return [...this.schedules].sort((a, b) => {
@@ -82,24 +82,25 @@ export default {
       });
     }
   },
-  sort(key) {
-    if (this.sortKey === key) {
-      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
-    } else {
-      this.sortKey = key;
-      this.sortOrder = 'asc';
+  methods: { // aqui nao tem cache <--- melhor para resposta de chamada de metodos
+    sort(key) {
+      if (this.sortKey === key) {
+        this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sortKey = key;
+        this.sortOrder = 'asc';
+      }
+    },
+    getValue(item, key) {
+      if (key === 'medico') {
+        return item.medico.nome;
+      } else if (key === 'paciente') {
+        return item.paciente.nome;
+      } else if (key === 'dataCriacao') {
+        return new Date(item.dataCriacao).getTime();
+      }
+      return item[key];
     }
-  },
-  getValue(item, key) {
-    if (key === 'medico') {
-      return item.medico.nome;
-    } else if (key === 'paciente') {
-      return item.paciente.nome;
-    } else if (key === 'dataCriacao') {
-      return new Date(item.dataCriacao).getTime();
-    }
-    return item[key];
   }
-
 };
 </script>
