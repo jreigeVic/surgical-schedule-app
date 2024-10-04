@@ -1,9 +1,9 @@
 <template>
-  <div class="filters">
+  <div class="filters flex flex-row gap-1 my-1">
     <input v-model="filters.medico" placeholder="Filtrar por Médico" />
     <input v-model="filters.paciente" placeholder="Filtrar por Paciente" />
     <input v-model="filters.dataCriacao" type="date" placeholder="Filtrar por Data" />
-    <button @click="applyFilters">Aplicar Filtros</button>
+    <button class="bg-[#1496E6] text-finx-gray rounded-full p-1 px-2 active:bg-finx-light-blue" @click="applyFilters">Aplicar Filtros</button>
   </div>
 </template>
 
