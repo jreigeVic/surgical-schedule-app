@@ -5,10 +5,12 @@
         <th class="text-left p-2 sm:p-4 cursor-pointer" @click="sort('medico')">
           Médico
           <span v-if="sortKey === 'medico'">
-            <svg v-if="sortOrder === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline w-4 h-4">
+            <svg v-if="sortOrder === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" class="inline w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
             </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline w-4 h-4">
+            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              class="inline w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </span>
@@ -16,10 +18,12 @@
         <th class="text-left p-2 sm:p-4 cursor-pointer" @click="sort('paciente')">
           Paciente
           <span v-if="sortKey === 'paciente'">
-            <svg v-if="sortOrder === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline w-4 h-4">
+            <svg v-if="sortOrder === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" class="inline w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
             </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline w-4 h-4">
+            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              class="inline w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </span>
@@ -27,10 +31,12 @@
         <th class="text-left p-2 sm:p-4 cursor-pointer" @click="sort('dataCriacao')">
           Data de Criação
           <span v-if="sortKey === 'dataCriacao'">
-            <svg v-if="sortOrder === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline w-4 h-4">
+            <svg v-if="sortOrder === 'asc'" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor" class="inline w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 15l7-7 7 7" />
             </svg>
-            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="inline w-4 h-4">
+            <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+              class="inline w-4 h-4">
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </span>
@@ -40,7 +46,8 @@
     <tbody>
       <tr v-for="schedule in sortedSchedules" :key="schedule.id">
         <td class="p-2 sm:p-4 border border-gray-300">{{ schedule.medico.nome }}</td>
-        <td class="p-2 sm:p-4 border border-gray-300">{{ schedule.paciente.nome }} - {{ new Date(schedule.paciente.dataNascimento).toLocaleDateString() }}</td>
+        <td class="p-2 sm:p-4 border border-gray-300">{{ schedule.paciente.nome }} - {{ new
+          Date(schedule.paciente.dataNascimento).toLocaleDateString() }}</td>
         <td class="p-2 sm:p-4 border border-gray-300">{{ new Date(schedule.dataCriacao).toLocaleDateString() }}</td>
       </tr>
     </tbody>
@@ -59,25 +66,40 @@ export default {
   data() {
     return {
       sortKey: null,
+      sortOrder: 'asc', 
     };
   },
   computed: {
     sortedSchedules() {
       if (!this.sortKey) return this.schedules;
       return [...this.schedules].sort((a, b) => {
-        const aValue = a[this.sortKey];
-        const bValue = b[this.sortKey];
+        const aValue = this.getValue(a, this.sortKey);
+        const bValue = this.getValue(b, this.sortKey);
 
-        if (aValue < bValue) return -1; // a menor vem primeiro  
-        if (aValue > bValue) return 1; // a maior b vem primeiro
+        if (aValue < bValue) return this.sortOrder === 'asc' ? -1 : 1;
+        if (aValue > bValue) return this.sortOrder === 'asc' ? 1 : -1;
         return 0;
       });
     }
   },
-  methods: {
-    sort(key) {
+  sort(key) {
+    if (this.sortKey === key) {
+      this.sortOrder = this.sortOrder === 'asc' ? 'desc' : 'asc';
+    } else {
       this.sortKey = key;
+      this.sortOrder = 'asc';
     }
+  },
+  getValue(item, key) {
+    if (key === 'medico') {
+      return item.medico.nome;
+    } else if (key === 'paciente') {
+      return item.paciente.nome;
+    } else if (key === 'dataCriacao') {
+      return new Date(item.dataCriacao).getTime();
+    }
+    return item[key];
   }
+
 };
 </script>
