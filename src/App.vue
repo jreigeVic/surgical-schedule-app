@@ -1,32 +1,20 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+  <div id="app" class="xl:mx-auto xl:max-w-screen-2xl">
+    <header>
+      <a href="https://finxapp.com.br" target="_blank">
+        <img src="@/assets/fin-x_logo-pos-qefui1hajgepbhu05qjyoeubvymnckd4ir0js06uio.png" class="p-2 mb-3" alt="fin-x logo">
+      </a>
+    </header>
+    <ScheduleList class="shadow-md rounded-lg mx-auto px-2 " />
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+import ScheduleList from '@/views/ScheduleList.vue';
 
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
+export default {
+  components: {
+    ScheduleList
+  }
+};
+</script>
